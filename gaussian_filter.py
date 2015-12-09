@@ -2,7 +2,7 @@ from __future__ import division
 from numpy import array, zeros, abs
 from numpy.fft import fft2, ifft2
 from PIL import Image
-from matplotlib.pyplot import imshow, show, subplot, figure, gray, title
+from matplotlib.pyplot import imshow, show, subplot, figure, gray, title, axis
 
 def gaussian(im):
     b = array([[2, 4,  5,  2,  2],
@@ -18,7 +18,7 @@ def gaussian(im):
     fil_im = ifft2(fim * fkernel)
 
     return abs(fil_im).astype(int)
-    
+
 if __name__ == "__main__":
     im = array(Image.open("emilia.jpg"))
     im = im[:, :, 0]
@@ -26,10 +26,12 @@ if __name__ == "__main__":
 
     subplot(1, 2, 1)
     imshow(im)
+    axis('off')
     title('Original')
 
     subplot(1, 2, 2)
     imshow(gaussian(im))
+    axis('off')
     title('Filtered')
 
     show()

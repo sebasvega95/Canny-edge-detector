@@ -39,14 +39,17 @@ if __name__ == '__main__':
 
     subplot(2, 2, 1)
     imshow(im)
+    axis('off')
     title('Original')
 
     subplot(2, 2, 2)
     imshow(gim)
+    axis('off')
     title('Gaussian')
 
     subplot(2, 2, 3)
     imshow(grim)
+    axis('off')
     title('Gradient')
 
     show()
