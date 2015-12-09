@@ -18,17 +18,18 @@ def gaussian(im):
     fil_im = ifft2(fim * fkernel)
 
     return abs(fil_im).astype(int)
+    
+if __name__ == "__main__":
+    im = array(Image.open("emilia.jpg"))
+    im = im[:, :, 0]
+    gray()
 
-im = array(Image.open("emilia.jpg"))
-im = im[:, :, 0]
-gray()
+    subplot(1, 2, 1)
+    imshow(im)
+    title('Original')
 
-subplot(1, 2, 1)
-imshow(im)
-title('Original')
+    subplot(1, 2, 2)
+    imshow(gaussian(im))
+    title('Filtered')
 
-subplot(1, 2, 2)
-imshow(gaussian(im))
-title('Filtered')
-
-show()
+    show()
