@@ -22,8 +22,8 @@ def gradient(im):
     kernel2 = fft2(kernel2)
 
     fim = fft2(im)
-    Gx = ifft2(kernel1 * fim).astype(float)
-    Gy = ifft2(kernel2 * fim).astype(float)
+    Gx = abs(ifft2(kernel1 * fim)).astype(float)
+    Gy = abs(ifft2(kernel2 * fim)).astype(float)
 
     G = sqrt(Gx**2 + Gy**2)
     Theta = arctan2(Gy, Gx) * 180 / pi
