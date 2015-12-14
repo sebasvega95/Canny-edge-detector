@@ -20,7 +20,11 @@ def gaussian(im):
     return abs(fil_im).astype(int)
 
 if __name__ == "__main__":
-    im = array(Image.open("emilia.jpg"))
+    from sys import argv
+    if len(argv) < 2:
+        print "Usage: python %s <image>" % argv[0]
+        exit()
+    im = array(Image.open(argv[1]))
     im = im[:, :, 0]
     gray()
 
