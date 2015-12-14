@@ -12,14 +12,16 @@ def thresholding(im):
     weak   = 0.5
     mmax = max(im)
     lo, hi = 0.1 * mmax, 0.8 * mmax
+    strongs = []
     for i in xrange(im.shape[0]):
         for j in xrange(im.shape[1]):
             px = im[i][j]
             if px >= hi:
                 thres[i][j] = strong
+                strongs.append((i, j))
             elif px >= lo:
                 thres[i][j] = weak
-    return thres
+    return thres, strongs
 
 if __name__ == '__main__':
     from sys import argv
@@ -40,7 +42,7 @@ if __name__ == '__main__':
     title('Original')
 
     subplot(1, 2, 2)
-    imshow(thres)
+    imshow(thres[0])
     axis('off')
     title('Double thresholding')
 
