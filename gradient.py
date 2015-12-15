@@ -1,6 +1,6 @@
 from __future__ import division
 from gaussian_filter import gaussian
-from numpy import array, zeros, abs, sqrt, arctan2
+from numpy import array, zeros, abs, sqrt, arctan2, pi
 from numpy.fft import fft2, ifft2
 from PIL import Image
 from matplotlib.pyplot import imshow, show, subplot, figure, gray, title, axis
@@ -22,19 +22,49 @@ def gradient(im):
     kernel2 = fft2(kernel2)
 
     fim = fft2(im)
-    Gx = abs(ifft2(kernel1 * fim)).astype(float)
-    Gy = abs(ifft2(kernel2 * fim)).astype(float)
+    Gx = ifft2(kernel1 * fim).astype(float)
+    Gy = ifft2(kernel2 * fim).astype(float)
 
     G = sqrt(Gx**2 + Gy**2)
-    Theta = arctan2(Gy, Gx)
+    Theta = arctan2(Gy, Gx) * 180 / pi
+    # print "MAtri"
+    # print G
+    # print Theta
+    return G, Theta
 
-    return G.astype(int), Theta.astype(int)
+def maximum(det, phase):
+    gmax = zeros(det.shape)
+    for i in xrange(gmax.shape[0]):
+        for j in xrange(gmax.shape[1]):
+            if(phase[i][j] < 0):
+                phase[i][j] += 360
+
+            if( ((j+1) < gmax.shape[1]) and ((j-1) >= 0) and ((i+1) < gmax.shape[0]) and ((i-1) >= 0) ):
+                #0 grados
+                if((phase[i][j] >= 0 and phase[i][j] < 22.5) or (phase[i][j] >= 175.5 and phase[i][j] <= 180)):
+                    if(det[i][j] > det[i][j + 1] and det[i][j] > det[i][j - 1]):
+                        gmax[i][j] = det[i][j]
+                #45 grados
+                if(phase[i][j] >= 22.5 and phase[i][j] < 67.5):
+                    if(det[i][j] > det[i - 1][j + 1] and det[i][j] > det[i + 1][j - 1]):
+                        gmax[i][j] = det[i][j]
+                #90 grados
+                if(phase[i][j] >= 67.5 and phase[i][j] < 112.5):
+                    if(det[i][j] > det[i - 1][j] and det[i][j] > det[i + 1][j]):
+                        gmax[i][j] = det[i][j]
+                #136 grados
+                if(phase[i][j] >= 112.5 and phase[i][j] < 157.5):
+                    if(det[i][j] > det[i - 1][j - 1] and det[i][j] > det[i + 1][j + 1]):
+                        gmax[i][j] = det[i][j]
+    return gmax
 
 if __name__ == '__main__':
     im = array(Image.open("emilia.jpg"))
     im = im[:, :, 0]
     gim = gaussian(im)
     grim, gphase = gradient(gim)
+    gmax = maximum(grim, gphase)
+
     gray()
 
     subplot(2, 2, 1)
@@ -51,5 +81,10 @@ if __name__ == '__main__':
     imshow(grim)
     axis('off')
     title('Gradient')
+
+    subplot(2, 2, 4)
+    imshow(gmax)
+    axis('off')
+    title('Non-Maximum suppression')
 
     show()
