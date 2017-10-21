@@ -14,7 +14,7 @@ def maximum(det, phase):
 
       if ((j+1) < gmax.shape[1]) and ((j-1) >= 0) and ((i+1) < gmax.shape[0]) and ((i-1) >= 0):
         # 0 degrees
-        if (phase[i][j] >= 337.5 and phase[i][j] < 22.5) or (phase[i][j] >= 157.5 and phase[i][j] < 202.5):
+        if (phase[i][j] >= 337.5 or phase[i][j] < 22.5) or (phase[i][j] >= 157.5 and phase[i][j] < 202.5):
           if det[i][j] >= det[i][j + 1] and det[i][j] >= det[i][j - 1]:
             gmax[i][j] = det[i][j]
         # 45 degrees
