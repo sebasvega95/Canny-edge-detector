@@ -26,7 +26,7 @@ def gradient(im):
     Gy = real(ifft2(kernel2 * fim)).astype(float)
 
     G = sqrt(Gx**2 + Gy**2)
-    Theta = arctan(Gy, Gx) * 180 / pi
+    Theta = arctan2(Gy, Gx) * 180 / pi
     return G, Theta
 
 if __name__ == '__main__':
